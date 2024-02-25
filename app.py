@@ -5,11 +5,15 @@ from linebot import LineBotApi, WebhookHandler
 from linebot.exceptions import InvalidSignatureError
 from linebot.models import *
 import os
+import yaml
 
 app = Flask(__name__)
 
-line_bot_api = LineBotApi('LrMgKNTRX8uzQkt1r1npaphUVeaWjA519o4CGQ1WcQXW+67qKVntkLpiZ3CTSrClgd81vxQ35P9+0pjIhwlB0saVNpQWcSZpsSWXEVB/QDENpDKuOm/DT5HBW/JzEMxSLzCQqDXKWMpxuyLl9Dlx3QdB04t89/1O/w1cDnyilFU=')
-handler = WebhookHandler('fba10ff5fcef3748c499bedeb3529f21')
+with open('./.config.yaml', 'r') as stream:
+    config = yaml.load(stream=stream, Loader=yaml.FullLoader)
+
+line_bot_api = LineBotApi(config["line_token"])
+handler = WebhookHandler(config["webhook_token"])
 
 
 @app.route("/callback", methods=['POST'])
